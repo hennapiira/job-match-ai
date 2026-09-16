@@ -1,0 +1,21 @@
+# API keys / environment variables
+.env*
+!.env.example
+
+# Virtual environment
+.venv/
+
+# Build output
+dist/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
