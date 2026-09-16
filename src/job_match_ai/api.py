@@ -3,12 +3,12 @@ from typing import Annotated
 from fastapi import FastAPI, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from job_search_ai.analyzer import (
+from job_match_ai.analyzer import (
     analyze_cv,
     analyze_job_url,
     analyze_match,
 )
-from job_search_ai.cv_reader import read_cv_pdf
+from job_match_ai.cv_reader import read_cv_pdf
 
 # Create the FastAPI application
 app = FastAPI()

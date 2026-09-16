@@ -1,5 +1,5 @@
-from job_search_ai.llm_client import analyze_text, analyze_url
-from job_search_ai.models import CVProfile, JobPosting, MatchAnalysis
+from job_match_ai.llm_client import analyze_text, analyze_url
+from job_match_ai.models import CVProfile, JobPosting, MatchAnalysis
 
 
 # Convert extracted CV text into a structured CV profile
