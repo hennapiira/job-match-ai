@@ -1,19 +1,14 @@
 from typing import Annotated
 
-from fastapi import FastAPI, Form, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from job_match_ai.analyzer import (
-    analyze_cv,
-    analyze_job_url,
-    analyze_match,
-)
+from job_match_ai.analyzer import analyze_cv, analyze_job_url, analyze_match
 from job_match_ai.cv_reader import read_cv_pdf
+from job_match_ai.models import MatchAnalysis
 
-# Create the FastAPI application
 app = FastAPI()
 
-# Allow the Next.js frontend to communicate with the API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -23,27 +18,41 @@ app.add_middleware(
 )
 
 
-# Simple endpoint for checking that the API is running
 @app.get("/")
 def root():
-    return {"message": "Job Match Analysis AI API"}
+    return {"message": "Job Match AI API"}
 
 
-# Receive the CV and job URL and run the job match analysis
-@app.post("/analyze")
+@app.post("/analyze", response_model=MatchAnalysis)
 def analyze(
-    cv: UploadFile,
+    cv: Annotated[UploadFile, File()],
     job_url: Annotated[str, Form()],
 ):
-    # Extract text from the uploaded CV
-    cv_text = read_cv_pdf(cv.file)
+    # Validate the uploaded file before trying to read it
+    if cv.content_type != "application/pdf":
+        raise HTTPException(
+            status_code=400,
+            detail="CV must be a PDF file.",
+        )
 
-    # Analyze the CV and job posting
-    profile = analyze_cv(cv_text)
-    job = analyze_job_url(job_url)
+    try:
+        cv_text = read_cv_pdf(cv.file)
 
-    # Compare the candidate with the job and generate the final analysis
-    analysis = analyze_match(profile, job)
+        if not cv_text.strip():
+            raise HTTPException(
+                status_code=400,
+                detail="Could not extract text from the PDF.",
+            )
 
-    # FastAPI converts the Pydantic objects into a JSON response
-    return analysis
+        profile = analyze_cv(cv_text)
+        job = analyze_job_url(job_url)
+        return analyze_match(profile, job)
+
+    except HTTPException:
+        raise
+    except Exception as error:
+        print(f"Analysis failed: {error}")
+        raise HTTPException(
+            status_code=500,
+            detail="Analysis failed. Please try again.",
+        ) from error
