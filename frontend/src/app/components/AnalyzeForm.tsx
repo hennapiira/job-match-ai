@@ -18,14 +18,14 @@ export default function AnalyzeForm({
   analyze,
 }: AnalyzeFormProps) {
   return (
-    <section className="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-white/[0.06] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-      <div className="space-y-6">
+    <section className="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-white/[0.06] p-5 shadow-2xl backdrop-blur-xl sm:p-6">
+      <div className="space-y-5">
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-300">
             Your CV
           </label>
 
-          <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-slate-600 bg-slate-900/50 px-6 py-8 transition hover:border-indigo-400 hover:bg-indigo-400/5">
+          <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-slate-600 bg-slate-900/50 px-6 py-6 transition hover:border-indigo-400 hover:bg-indigo-400/5">
             <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/10 text-xl text-indigo-300">
               ↑
             </div>

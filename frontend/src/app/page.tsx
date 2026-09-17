@@ -15,12 +15,14 @@ type AnalyzeResult = {
 };
 
 export default function Home() {
+  // Form state
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [jobUrl, setJobUrl] = useState('');
   const [result, setResult] = useState<AnalyzeResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Send the CV and job URL to the analysis API
   async function analyze() {
     if (!cvFile || !jobUrl) {
       setError('Add your CV and job posting URL.');
@@ -66,7 +68,7 @@ export default function Home() {
         <div className="absolute right-1/4 top-40 h-80 w-80 rounded-full bg-violet-600/10 blur-3xl" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-5 py-16 sm:py-24">
+      <div className="relative z-10 mx-auto max-w-5xl px-5 py-6">
         <Header />
 
         <AnalyzeForm
